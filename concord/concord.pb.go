@@ -24,7 +24,7 @@ const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // The request message containing the user's name.
 type GetRequest struct {
-	Key                  []byte   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -55,16 +55,18 @@ func (m *GetRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetRequest proto.InternalMessageInfo
 
-func (m *GetRequest) GetKey() []byte {
+func (m *GetRequest) GetKey() string {
 	if m != nil {
 		return m.Key
 	}
-	return nil
+	return ""
 }
 
 // The response message containing the greetings
 type GetReply struct {
-	Body                 []byte   `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
+	Ret                  bool     `protobuf:"varint,1,opt,name=ret,proto3" json:"ret,omitempty"`
+	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	Value                []byte   `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -95,30 +97,144 @@ func (m *GetReply) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetReply proto.InternalMessageInfo
 
-func (m *GetReply) GetBody() []byte {
+func (m *GetReply) GetRet() bool {
 	if m != nil {
-		return m.Body
+		return m.Ret
+	}
+	return false
+}
+
+func (m *GetReply) GetError() string {
+	if m != nil {
+		return m.Error
+	}
+	return ""
+}
+
+func (m *GetReply) GetValue() []byte {
+	if m != nil {
+		return m.Value
 	}
 	return nil
+}
+
+type SetRequest struct {
+	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value                []byte   `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SetRequest) Reset()         { *m = SetRequest{} }
+func (m *SetRequest) String() string { return proto.CompactTextString(m) }
+func (*SetRequest) ProtoMessage()    {}
+func (*SetRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_66efaa028881d594, []int{2}
+}
+
+func (m *SetRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SetRequest.Unmarshal(m, b)
+}
+func (m *SetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SetRequest.Marshal(b, m, deterministic)
+}
+func (m *SetRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SetRequest.Merge(m, src)
+}
+func (m *SetRequest) XXX_Size() int {
+	return xxx_messageInfo_SetRequest.Size(m)
+}
+func (m *SetRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_SetRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SetRequest proto.InternalMessageInfo
+
+func (m *SetRequest) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+func (m *SetRequest) GetValue() []byte {
+	if m != nil {
+		return m.Value
+	}
+	return nil
+}
+
+type SetReply struct {
+	Ret                  bool     `protobuf:"varint,1,opt,name=ret,proto3" json:"ret,omitempty"`
+	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SetReply) Reset()         { *m = SetReply{} }
+func (m *SetReply) String() string { return proto.CompactTextString(m) }
+func (*SetReply) ProtoMessage()    {}
+func (*SetReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_66efaa028881d594, []int{3}
+}
+
+func (m *SetReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SetReply.Unmarshal(m, b)
+}
+func (m *SetReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SetReply.Marshal(b, m, deterministic)
+}
+func (m *SetReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SetReply.Merge(m, src)
+}
+func (m *SetReply) XXX_Size() int {
+	return xxx_messageInfo_SetReply.Size(m)
+}
+func (m *SetReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_SetReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SetReply proto.InternalMessageInfo
+
+func (m *SetReply) GetRet() bool {
+	if m != nil {
+		return m.Ret
+	}
+	return false
+}
+
+func (m *SetReply) GetError() string {
+	if m != nil {
+		return m.Error
+	}
+	return ""
 }
 
 func init() {
 	proto.RegisterType((*GetRequest)(nil), "concord.GetRequest")
 	proto.RegisterType((*GetReply)(nil), "concord.GetReply")
+	proto.RegisterType((*SetRequest)(nil), "concord.SetRequest")
+	proto.RegisterType((*SetReply)(nil), "concord.SetReply")
 }
 
 func init() { proto.RegisterFile("concord.proto", fileDescriptor_66efaa028881d594) }
 
 var fileDescriptor_66efaa028881d594 = []byte{
-	// 128 bytes of a gzipped FileDescriptorProto
+	// 189 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4d, 0xce, 0xcf, 0x4b,
 	0xce, 0x2f, 0x4a, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x87, 0x72, 0x95, 0xe4, 0xb8,
 	0xb8, 0xdc, 0x53, 0x4b, 0x82, 0x52, 0x0b, 0x4b, 0x53, 0x8b, 0x4b, 0x84, 0x04, 0xb8, 0x98, 0xb3,
-	0x53, 0x2b, 0x25, 0x18, 0x15, 0x18, 0x35, 0x78, 0x82, 0x40, 0x4c, 0x25, 0x39, 0x2e, 0x0e, 0xb0,
-	0x7c, 0x41, 0x4e, 0xa5, 0x90, 0x10, 0x17, 0x4b, 0x52, 0x7e, 0x0a, 0x4c, 0x1a, 0xcc, 0x36, 0xb2,
-	0xe2, 0x62, 0x77, 0x86, 0x18, 0x25, 0xa4, 0xcf, 0xc5, 0xec, 0x9e, 0x5a, 0x22, 0x24, 0xac, 0x07,
-	0xb3, 0x0a, 0x61, 0xb0, 0x94, 0x20, 0xaa, 0x60, 0x41, 0x4e, 0xa5, 0x12, 0x43, 0x12, 0x1b, 0xd8,
-	0x2d, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x35, 0x4d, 0x30, 0xef, 0x9c, 0x00, 0x00, 0x00,
+	0x53, 0x2b, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x40, 0x4c, 0x25, 0x0f, 0x2e, 0x0e, 0xb0,
+	0x7c, 0x41, 0x4e, 0x25, 0x48, 0xb6, 0x28, 0xb5, 0x04, 0x2c, 0xcb, 0x11, 0x04, 0x62, 0x0a, 0x89,
+	0x70, 0xb1, 0xa6, 0x16, 0x15, 0xe5, 0x17, 0x49, 0x30, 0x81, 0x75, 0x40, 0x38, 0x20, 0xd1, 0xb2,
+	0xc4, 0x9c, 0xd2, 0x54, 0x09, 0x66, 0x05, 0x46, 0x0d, 0x9e, 0x20, 0x08, 0x47, 0xc9, 0x84, 0x8b,
+	0x2b, 0x18, 0x8f, 0x4d, 0x08, 0x5d, 0x4c, 0xc8, 0xba, 0x8c, 0xb8, 0x38, 0x82, 0x49, 0xb4, 0xdf,
+	0x28, 0x9b, 0x8b, 0xdd, 0x19, 0xe2, 0x3d, 0x21, 0x7d, 0x2e, 0x66, 0xf7, 0xd4, 0x12, 0x21, 0x61,
+	0x3d, 0x98, 0xf7, 0x11, 0x9e, 0x95, 0x12, 0x44, 0x15, 0x2c, 0xc8, 0xa9, 0x54, 0x62, 0x00, 0x69,
+	0x08, 0x46, 0xd1, 0x10, 0x8c, 0x4d, 0x43, 0x30, 0x5c, 0x43, 0x12, 0x1b, 0x38, 0x40, 0x8d, 0x01,
+	0x01, 0x00, 0x00, 0xff, 0xff, 0x05, 0x6b, 0x78, 0x71, 0x61, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -134,6 +250,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ConcordClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetReply, error)
+	Set(ctx context.Context, in *SetRequest, opts ...grpc.CallOption) (*SetReply, error)
 }
 
 type concordClient struct {
@@ -153,9 +270,19 @@ func (c *concordClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.Ca
 	return out, nil
 }
 
+func (c *concordClient) Set(ctx context.Context, in *SetRequest, opts ...grpc.CallOption) (*SetReply, error) {
+	out := new(SetReply)
+	err := c.cc.Invoke(ctx, "/concord.Concord/Set", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConcordServer is the server API for Concord service.
 type ConcordServer interface {
 	Get(context.Context, *GetRequest) (*GetReply, error)
+	Set(context.Context, *SetRequest) (*SetReply, error)
 }
 
 func RegisterConcordServer(s *grpc.Server, srv ConcordServer) {
@@ -180,6 +307,24 @@ func _Concord_Get_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Concord_Set_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConcordServer).Set(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/concord.Concord/Set",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConcordServer).Set(ctx, req.(*SetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Concord_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "concord.Concord",
 	HandlerType: (*ConcordServer)(nil),
@@ -187,6 +332,10 @@ var _Concord_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _Concord_Get_Handler,
+		},
+		{
+			MethodName: "Set",
+			Handler:    _Concord_Set_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
