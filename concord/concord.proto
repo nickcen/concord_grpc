@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package concord;
+
+service Concord {
+  rpc Get (GetRequest) returns (GetReply) {}
+}
+
+// The request message containing the user's name.
+message GetRequest {
+  bytes key = 1;
+}
+
+// The response message containing the greetings
+message GetReply {
+  bytes body = 1;
+}
