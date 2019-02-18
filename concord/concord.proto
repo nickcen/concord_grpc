@@ -1,10 +1,12 @@
 syntax = "proto3";
 
-package concord;
+package msgs;
 
 service Concord {
   rpc Get (GetRequest) returns (GetReply) {}
   rpc Set (SetRequest) returns (SetReply) {}
+  rpc Delete (DeleteRequest) returns (DeleteReply) {}
+  rpc Init (InitRequest) returns (InitReply) {}
 }
 
 // The request message containing the user's name.
@@ -28,3 +30,16 @@ message SetReply {
   bool ret = 1;
   string error = 2; 
 }
+
+message DeleteRequest {
+  string key = 1;
+}
+
+message DeleteReply {
+  bool ret = 1;
+  string error = 2; 
+}
+
+message InitRequest {}
+
+message InitReply {}
