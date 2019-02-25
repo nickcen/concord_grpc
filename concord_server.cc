@@ -49,7 +49,7 @@ class ConcordServiceImpl final : public Concord::Service {
 
   Status Set(ServerContext* context, const SetRequest* request,
                   SetReply* reply) override {
-    printf("received Set request");
+    std::cout << "received Set request" << std::endl;
     
     return Status::OK;
   }

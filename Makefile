@@ -53,7 +53,7 @@ concord_server.o:
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean:
-	rm -f *.o *.pb.cc *.pb.h
+	rm -f *.o *.pb.cc *.pb.h concord_server
 
 
 # The following is to test your system and ensure a smoother experience.
