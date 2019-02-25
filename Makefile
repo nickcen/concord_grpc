@@ -41,8 +41,8 @@ all: system-check concord_server
 concord_server: concord.pb.o concord.grpc.pb.o concord_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
-concord_server.o: concord_server.cpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c concord_server.cpp
+concord_server.o: 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c concord_server.cc
 
 .PRECIOUS: %.grpc.pb.cc
 %.grpc.pb.cc: %.proto
