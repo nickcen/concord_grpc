@@ -22,19 +22,21 @@
 
 #include <grpcpp/grpcpp.h>
 
-#ifdef BAZEL_BUILD
-#include "examples/protos/helloworld.grpc.pb.h"
-#else
 #include "concord.grpc.pb.h"
-#endif
 
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
-using helloworld::HelloRequest;
-using helloworld::HelloReply;
-using helloworld::Greeter;
+using concord::GetRequest;
+using concord::GetReply;
+using concord::SetRequest;
+using concord::SetReply;
+using concord::DeleteRequest;
+using concord::DeleteReply;
+using concord::InitRequest;
+using concord::InitReply;
+using concord::Concord;
 
 // Logic and data behind the server's behavior.
 class ConcordServiceImpl final : public Concord::Service {
