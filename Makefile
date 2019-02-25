@@ -38,15 +38,11 @@ vpath %.proto $(PROTOS_PATH)
 
 all: system-check concord_server
 
-concord_client: concord.pb.o concord.grpc.pb.o concord_client.o
-	$(CXX) $^ $(LDFLAGS) -o $@
-
 concord_server: concord.pb.o concord.grpc.pb.o concord_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
-
-%.o: %.cpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+concord_server.o: concord_server.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c concord_server.cpp
 
 .PRECIOUS: %.grpc.pb.cc
 %.grpc.pb.cc: %.proto
