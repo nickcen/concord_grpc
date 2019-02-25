@@ -20,11 +20,11 @@ CXX = g++
 CPPFLAGS += `pkg-config --cflags protobuf grpc`
 CXXFLAGS += -std=c++11
 ifeq ($(SYSTEM),Darwin)
-LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
+LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++ grpc`\
            -lgrpc++_reflection\
            -ldl
 else
-LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
+LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++ grpc`\
            -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
            -ldl
 endif
@@ -32,26 +32,37 @@ PROTOC = protoc
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-PROTOS_PATH = ./concord
+PROTOS_PATH = ../../protos
 
 vpath %.proto $(PROTOS_PATH)
 
-all: system-check concord_client concord_server
+all: system-check greeter_client greeter_server greeter_async_client greeter_async_client2 greeter_async_server
 
-concord_client: concord.pb.o concord.grpc.pb.o concord_client.o helper.o
-  $(CXX) $^ $(LDFLAGS) -o $@
+greeter_client: helloworld.pb.o helloworld.grpc.pb.o greeter_client.o
+	$(CXX) $^ $(LDFLAGS) -o $@
 
-concord_server: concord.pb.o concord.grpc.pb.o concord_server.o helper.o
-  $(CXX) $^ $(LDFLAGS) -o $@
+greeter_server: helloworld.pb.o helloworld.grpc.pb.o greeter_server.o
+	$(CXX) $^ $(LDFLAGS) -o $@
 
+greeter_async_client: helloworld.pb.o helloworld.grpc.pb.o greeter_async_client.o
+	$(CXX) $^ $(LDFLAGS) -o $@
+
+greeter_async_client2: helloworld.pb.o helloworld.grpc.pb.o greeter_async_client2.o
+	$(CXX) $^ $(LDFLAGS) -o $@
+
+greeter_async_server: helloworld.pb.o helloworld.grpc.pb.o greeter_async_server.o
+	$(CXX) $^ $(LDFLAGS) -o $@
+
+.PRECIOUS: %.grpc.pb.cc
 %.grpc.pb.cc: %.proto
-  $(PROTOC) -I $(PROTOS_PATH) --grpc_out=./concord --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
+	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
 
+.PRECIOUS: %.pb.cc
 %.pb.cc: %.proto
-  $(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
+	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean:
-  rm -f *.o *.pb.cc *.pb.h concord_client concord_server
+	rm -f *.o *.pb.cc *.pb.h greeter_client greeter_server greeter_async_client greeter_async_client2 greeter_async_server
 
 
 # The following is to test your system and ensure a smoother experience.
@@ -75,34 +86,34 @@ endif
 
 system-check:
 ifneq ($(HAS_VALID_PROTOC),true)
-  @echo " DEPENDENCY ERROR"
-  @echo
-  @echo "You don't have protoc 3.0.0 installed in your path."
-  @echo "Please install Google protocol buffers 3.0.0 and its compiler."
-  @echo "You can find it here:"
-  @echo
-  @echo "   https://github.com/google/protobuf/releases/tag/v3.0.0"
-  @echo
-  @echo "Here is what I get when trying to evaluate your version of protoc:"
-  @echo
-  -$(PROTOC) --version
-  @echo
-  @echo
+	@echo " DEPENDENCY ERROR"
+	@echo
+	@echo "You don't have protoc 3.0.0 installed in your path."
+	@echo "Please install Google protocol buffers 3.0.0 and its compiler."
+	@echo "You can find it here:"
+	@echo
+	@echo "   https://github.com/google/protobuf/releases/tag/v3.0.0"
+	@echo
+	@echo "Here is what I get when trying to evaluate your version of protoc:"
+	@echo
+	-$(PROTOC) --version
+	@echo
+	@echo
 endif
 ifneq ($(HAS_PLUGIN),true)
-  @echo " DEPENDENCY ERROR"
-  @echo
-  @echo "You don't have the grpc c++ protobuf plugin installed in your path."
-  @echo "Please install grpc. You can find it here:"
-  @echo
-  @echo "   https://github.com/grpc/grpc"
-  @echo
-  @echo "Here is what I get when trying to detect if you have the plugin:"
-  @echo
-  -which $(GRPC_CPP_PLUGIN)
-  @echo
-  @echo
+	@echo " DEPENDENCY ERROR"
+	@echo
+	@echo "You don't have the grpc c++ protobuf plugin installed in your path."
+	@echo "Please install grpc. You can find it here:"
+	@echo
+	@echo "   https://github.com/grpc/grpc"
+	@echo
+	@echo "Here is what I get when trying to detect if you have the plugin:"
+	@echo
+	-which $(GRPC_CPP_PLUGIN)
+	@echo
+	@echo
 endif
 ifneq ($(SYSTEM_OK),true)
-  @false
+	@false
 endif
