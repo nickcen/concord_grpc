@@ -44,6 +44,10 @@ concord_client: concord.pb.o concord.grpc.pb.o concord_client.o
 concord_server: concord.pb.o concord.grpc.pb.o concord_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
+
+%.o: %.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
 .PRECIOUS: %.grpc.pb.cc
 %.grpc.pb.cc: %.proto
 	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
@@ -53,7 +57,7 @@ concord_server: concord.pb.o concord.grpc.pb.o concord_server.o
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean:
-	rm -f *.o *.pb.cc *.pb.h concord_client concord_server
+	rm -f *.o *.pb.cc *.pb.h
 
 
 # The following is to test your system and ensure a smoother experience.
