@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package msgs;
+package concord;
 
 service Concord {
   rpc Get (GetRequest) returns (GetReply) {}
