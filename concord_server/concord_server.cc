@@ -25,7 +25,7 @@
 #ifdef BAZEL_BUILD
 #include "examples/protos/helloworld.grpc.pb.h"
 #else
-#include "helloworld.grpc.pb.h"
+#include "concord.grpc.pb.h"
 #endif
 
 using grpc::Server;
@@ -37,18 +37,37 @@ using helloworld::HelloReply;
 using helloworld::Greeter;
 
 // Logic and data behind the server's behavior.
-class GreeterServiceImpl final : public Greeter::Service {
-  Status SayHello(ServerContext* context, const HelloRequest* request,
-                  HelloReply* reply) override {
+class ConcordServiceImpl final : public Concord::Service {
+  Status Get(ServerContext* context, const GetRequest* request,
+                  GetReply* reply) override {
     std::string prefix("Hello ");
-    reply->set_message(prefix + request->name());
+    reply->set_value(prefix + request->key());
+    return Status::OK;
+  }
+
+  Status Set(ServerContext* context, const SetRequest* request,
+                  SetReply* reply) override {
+    printf("received Set request");
+    
+    return Status::OK;
+  }
+
+  Status Delete(ServerContext* context, const DeleteRequest* request,
+                  DeleteReply* reply) override {
+    
+    return Status::OK;
+  }
+
+  Status Init(ServerContext* context, const InitRequest* request,
+                  InitReply* reply) override {
+    
     return Status::OK;
   }
 };
 
 void RunServer() {
   std::string server_address("0.0.0.0:50051");
-  GreeterServiceImpl service;
+  ConcordServiceImpl service;
 
   ServerBuilder builder;
   // Listen on the given address without any authentication mechanism.

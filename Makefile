@@ -36,7 +36,7 @@ PROTOS_PATH = ./concord
 
 vpath %.proto $(PROTOS_PATH)
 
-all: system-check concord_client concord_server
+all: system-check concord_server
 
 concord_client: concord.pb.o concord.grpc.pb.o concord_client.o
 	$(CXX) $^ $(LDFLAGS) -o $@
