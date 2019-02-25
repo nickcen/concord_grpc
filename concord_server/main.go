@@ -45,10 +45,10 @@ func (s *server) Set(ctx context.Context, in *pb.SetRequest) (*pb.SetReply, erro
 func (s *server) Delete(ctx context.Context, in *pb.DeleteRequest) (*pb.DeleteReply, error) {
   log.Printf("Received Delete Request: [%v]", in.Key)
 
-  // err := s.client.Set(in.Key, string(in.Value), 0).Err()
-  // if err != nil {
-  //   panic(err)
-  // }
+  err := s.client.Del(in.Key).Err()
+  if err != nil {
+    panic(err)
+  }
 
   return &pb.DeleteReply{Ret: true, Error: ""}, nil
 }
