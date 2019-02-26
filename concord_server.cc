@@ -120,19 +120,19 @@ class ConcordServiceImpl final : public Concord::Service {
 
     std::cout << "received Init request " << std::endl;
 
-    redisContext *c = redisConnect("127.0.0.1", 6379);
-    if (c == NULL || c->err) {
-      if (c) {
-        printf("Error: %s\n", c->errstr);
-        // handle error
-      } else {
-        printf("Can't allocate redis context\n");
-      }
-    }
+    // redisContext *c = redisConnect("127.0.0.1", 6379);
+    // if (c == NULL || c->err) {
+    //   if (c) {
+    //     printf("Error: %s\n", c->errstr);
+    //     // handle error
+    //   } else {
+    //     printf("Can't allocate redis context\n");
+    //   }
+    // }
     
-    redisReply *pRedisReply = (redisReply*)redisCommand(c, "flushall");
+    // redisReply *pRedisReply = (redisReply*)redisCommand(c, "flushall");
     
-    freeReplyObject(pRedisReply); 
+    // freeReplyObject(pRedisReply); 
 
     return Status::OK;
   }
