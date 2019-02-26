@@ -43,7 +43,7 @@ using concord::Concord;
 class ConcordServiceImpl final : public Concord::Service {
   Status Get(ServerContext* context, const GetRequest* request,
     GetReply* reply) override {
-    std::cout << "received Get request " << request->key() << std::endl;
+    
 
     redisContext *c = redisConnect("127.0.0.1", 6379);
     if (c == NULL || c->err) {
@@ -57,10 +57,14 @@ class ConcordServiceImpl final : public Concord::Service {
     const char *k = request->key().c_str();
 
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", k);
-    std::cout << pRedisReply->str << std::endl;
-    freeReplyObject(pRedisReply); 
 
-    reply->set_value(std::string(pRedisReply->str, pRedisReply->len));
+    
+    std::string value = std::string(pRedisReply->str, pRedisReply->len);
+
+    std::cout << "received Get request " << request->key() << ":" << value << std::endl;
+    reply->set_value(value);
+
+    freeReplyObject(pRedisReply); 
 
     return Status::OK;
   }
