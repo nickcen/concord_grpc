@@ -59,7 +59,7 @@ class ConcordServiceImpl final : public Concord::Service {
     std::cout << pRedisReply->str << std::endl;
     freeReplyObject(pRedisReply); 
 
-    reply->set_value(pRedisReply->str.c_str());
+    reply->set_value(pRedisReply->str);
 
     return Status::OK;
   }
@@ -79,7 +79,7 @@ class ConcordServiceImpl final : public Concord::Service {
     }
     std::string k = request->key();
     std::string v = request->value();
-    redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %s", "test", "bar");
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET key:%s %s", k, v);
     std::cout << pRedisReply->str << std::endl;
     freeReplyObject(pRedisReply); 
     return Status::OK;
