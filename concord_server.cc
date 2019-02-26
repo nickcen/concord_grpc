@@ -59,7 +59,7 @@ public:
 
     if(pRedisReply->len > 0){
       std::cout << "received Get request [" << request->key() << ":" << pRedisReply->str << "]" << std::endl;
-      reply->set_value(pRedisReply->str);
+      reply->set_value(std::string(pRedisReply->str, pRedisReply->len));
     }
 
     freeReplyObject(pRedisReply); 
