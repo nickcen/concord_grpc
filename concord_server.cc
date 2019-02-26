@@ -61,7 +61,7 @@ class ConcordServiceImpl final : public Concord::Service {
         printf("Can't allocate redis context\n");
       }
     }
-    redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %s", "foo", "bar");
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %b", request->get_key(), request->get_value(), request->get_value()->size());
     std::cout << pRedisReply->str << std::endl;
     freeReplyObject(pRedisReply); 
     return Status::OK;
