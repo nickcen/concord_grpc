@@ -19,6 +19,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <hiredis/hiredis.h>
 
 #include <grpcpp/grpcpp.h>
 
@@ -41,28 +42,40 @@ using concord::Concord;
 // Logic and data behind the server's behavior.
 class ConcordServiceImpl final : public Concord::Service {
   Status Get(ServerContext* context, const GetRequest* request,
-                  GetReply* reply) override {
+    GetReply* reply) override {
     std::string prefix("Hello ");
     reply->set_value(prefix + request->key());
     return Status::OK;
   }
 
   Status Set(ServerContext* context, const SetRequest* request,
-                  SetReply* reply) override {
+    SetReply* reply) override {
     std::cout << "received Set request" << std::endl;
-    
+
+    redisContext *c = redisConnect("127.0.0.1", 6379);
+    if (c == NULL || c->err) {
+      if (c) {
+        printf("Error: %s\n", c->errstr);
+        // handle error
+      } else {
+        printf("Can't allocate redis context\n");
+      }
+    }
+    redisReply *pRedisReply = (redisReply*)redisCommand(context, "SET %s %s", "foo", "bar");
+    std::cout << pRedisReply->str << std::endl;
+    freeReplyObject(pRedisReply); 
     return Status::OK;
   }
 
   Status Delete(ServerContext* context, const DeleteRequest* request,
-                  DeleteReply* reply) override {
-    
+    DeleteReply* reply) override {
+
     return Status::OK;
   }
 
   Status Init(ServerContext* context, const InitRequest* request,
-                  InitReply* reply) override {
-    
+    InitReply* reply) override {
+
     return Status::OK;
   }
 };

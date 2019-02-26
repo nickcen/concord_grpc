@@ -11,6 +11,7 @@ import (
 
 const (
   address     = "39.107.78.147:50051"
+  // address     = "localhost:50051"
 )
 
 func main() {
@@ -24,7 +25,7 @@ func main() {
 
   ctx, cancel := context.WithTimeout(context.Background(), time.Second)
   defer cancel()
-
+  
   s_r, err := c.Set(ctx, &pb.SetRequest{Key: "test", Value: []byte("hello world")})
   if err != nil {
     log.Fatalf("could not set: %v", err)
