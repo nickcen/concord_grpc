@@ -81,7 +81,7 @@ class ConcordServiceImpl final : public Concord::Service {
     const char *v = request->value().c_str();
     // char* k = request->key();
     // char* v = request->value();
-    redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET key:%s %s", k, v);
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %s", k, v);
     std::cout << pRedisReply->str << std::endl;
     freeReplyObject(pRedisReply); 
     return Status::OK;
