@@ -29,15 +29,15 @@ using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
-using concord::GetRequest;
-using concord::GetReply;
-using concord::SetRequest;
-using concord::SetReply;
-using concord::DeleteRequest;
-using concord::DeleteReply;
-using concord::InitRequest;
-using concord::InitReply;
-using concord::Concord;
+using msgs::GetRequest;
+using msgs::GetReply;
+using msgs::SetRequest;
+using msgs::SetReply;
+using msgs::DeleteRequest;
+using msgs::DeleteReply;
+using msgs::InitRequest;
+using msgs::InitReply;
+using msgs::Concord;
 
 // Logic and data behind the server's behavior.
 class ConcordServiceImpl final : public Concord::Service {

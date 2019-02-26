@@ -6,7 +6,7 @@ import (
   "time"
 
   "google.golang.org/grpc"
-  pb "github.com/nickcen/concord_grpc/concord"
+  pb "github.com/nickcen/concord_grpc/msgs"
 )
 
 const (

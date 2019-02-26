@@ -6,7 +6,7 @@ import (
   "net"
 
   "google.golang.org/grpc"
-  pb "github.com/nickcen/concord_grpc/concord"
+  pb "github.com/nickcen/concord_grpc/msgs"
   "github.com/go-redis/redis"
 )
 
