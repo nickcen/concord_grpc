@@ -77,8 +77,8 @@ class ConcordServiceImpl final : public Concord::Service {
         printf("Can't allocate redis context\n");
       }
     }
-    const char *k = request->key().c_str()
-    const char *v = request->value().c_str()
+    const char *k = request->key().c_str();
+    const char *v = request->value().c_str();
     // char* k = request->key();
     // char* v = request->value();
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET key:%s %s", k, v);
