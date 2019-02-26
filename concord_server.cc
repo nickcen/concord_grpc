@@ -73,7 +73,7 @@ public:
 
     const char *k = request->key().c_str();
     const char *v = request->value().c_str();
-    redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %s", k, v);
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %b", k, v, request->value().length());
     
     freeReplyObject(pRedisReply); 
 
@@ -98,9 +98,9 @@ public:
 
     std::cout << "received Init request " << std::endl;
     
-    // redisReply *pRedisReply = (redisReply*)redisCommand(c, "flushall");
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "flushall");
     
-    // freeReplyObject(pRedisReply); 
+    freeReplyObject(pRedisReply); 
 
     return Status::OK;
   }
