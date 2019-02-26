@@ -59,10 +59,10 @@ class ConcordServiceImpl final : public Concord::Service {
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", k);
 
     
-    std::string value = std::string(pRedisReply->str, pRedisReply->len);
+    // std::string value = std::string(pRedisReply->str, pRedisReply->len);
 
-    std::cout << "received Get request " << request->key() << ":" << value << std::endl;
-    reply->set_value(value);
+    std::cout << "received Get request " << request->key() << ":" << pRedisReply->str << std::endl;
+    reply->set_value(pRedisReply->str);
 
     freeReplyObject(pRedisReply); 
 
