@@ -61,8 +61,9 @@ class ConcordServiceImpl final : public Concord::Service {
     std::cout << "received Get request " << request->key() << ":" << pRedisReply->str << std::endl;
 
     std::cout << "pRedisReply len:" << pRedisReply->len << std::endl;
-
-    reply->set_value(pRedisReply->str);
+    if(pRedisReply->len > 0){
+      reply->set_value(pRedisReply->str);  
+    }
 
     freeReplyObject(pRedisReply); 
 
