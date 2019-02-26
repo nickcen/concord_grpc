@@ -58,7 +58,7 @@ class ConcordServiceImpl final : public Concord::Service {
 
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", k);
 
-    std::cout << "received Get request " << request->key() << ":" << pRedisReply->str << std::endl;
+    std::cout << "received Get request [" << request->key() << ":" << pRedisReply->str << "]" << std::endl;
 
     if(pRedisReply->len > 0){
       reply->set_value(pRedisReply->str);
