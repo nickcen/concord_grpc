@@ -55,11 +55,11 @@ class ConcordServiceImpl final : public Concord::Service {
       }
     }
     std::string k = request->key();
-    redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", k);
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", "test");
     std::cout << pRedisReply->str << std::endl;
     freeReplyObject(pRedisReply); 
 
-    reply->set_value(pRedisReply->str);
+    reply->set_value(pRedisReply->str.c_str());
 
     return Status::OK;
   }
