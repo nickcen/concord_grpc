@@ -60,7 +60,7 @@ class ConcordServiceImpl final : public Concord::Service {
     std::cout << pRedisReply->str << std::endl;
     freeReplyObject(pRedisReply); 
 
-    reply->set_value(pRedisReply->str);
+    reply->set_value(std::string(pRedisReply->str));
 
     return Status::OK;
   }
