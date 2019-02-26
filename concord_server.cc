@@ -43,6 +43,7 @@ using concord::Concord;
 class ConcordServiceImpl final : public Concord::Service {
   Status Get(ServerContext* context, const GetRequest* request,
     GetReply* reply) override {
+    std::cout << "received Get request " << request->key() << std::endl;
 
     redisContext *c = redisConnect("127.0.0.1", 6379);
     if (c == NULL || c->err) {
@@ -53,7 +54,8 @@ class ConcordServiceImpl final : public Concord::Service {
         printf("Can't allocate redis context\n");
       }
     }
-    redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s %s", request->key());
+    std::string k = request->key();
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", k);
     std::cout << pRedisReply->str << std::endl;
     freeReplyObject(pRedisReply); 
 
