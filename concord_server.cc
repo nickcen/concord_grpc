@@ -41,19 +41,27 @@ using msgs::Concord;
 
 // Logic and data behind the server's behavior.
 class ConcordServiceImpl final : public Concord::Service {
+private: 
+  redisContext* c;
+  
+public: 
+
+  ConcordServiceImpl(redisContext* rc) 
+  { 
+    c = rc;
+  } 
   Status Get(ServerContext* context, const GetRequest* request,
     GetReply* reply) override {
-    
 
-    redisContext *c = redisConnect("127.0.0.1", 6379);
-    if (c == NULL || c->err) {
-      if (c) {
-        printf("Error: %s\n", c->errstr);
-        // handle error
-      } else {
-        printf("Can't allocate redis context\n");
-      }
-    }
+    // redisContext *c = redisConnect("127.0.0.1", 6379);
+    // if (c == NULL || c->err) {
+    //   if (c) {
+    //     printf("Error: %s\n", c->errstr);
+    //     // handle error
+    //   } else {
+    //     printf("Can't allocate redis context\n");
+    //   }
+    // }
     const char *k = request->key().c_str();
 
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", k);
@@ -71,17 +79,18 @@ class ConcordServiceImpl final : public Concord::Service {
 
   Status Set(ServerContext* context, const SetRequest* request,
     SetReply* reply) override {
-    std::cout << "received Set request " << request->key() << ":" << request->value() << std::endl;
+    std::cout << "received Set request [" << request->key() << ":" << request->value() << "]" << std::endl;
 
-    redisContext *c = redisConnect("127.0.0.1", 6379);
-    if (c == NULL || c->err) {
-      if (c) {
-        printf("Error: %s\n", c->errstr);
-        // handle error
-      } else {
-        printf("Can't allocate redis context\n");
-      }
-    }
+    // redisContext *c = redisConnect("127.0.0.1", 6379);
+    // if (c == NULL || c->err) {
+    //   if (c) {
+    //     printf("Error: %s\n", c->errstr);
+    //     // handle error
+    //   } else {
+    //     printf("Can't allocate redis context\n");
+    //   }
+    // }
+    
     const char *k = request->key().c_str();
     const char *v = request->value().c_str();
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %s", k, v);
@@ -94,7 +103,7 @@ class ConcordServiceImpl final : public Concord::Service {
   Status Delete(ServerContext* context, const DeleteRequest* request,
     DeleteReply* reply) override {
 
-    std::cout << "received Delete request " << request->key() << std::endl;
+    std::cout << "received Delete request [" << request->key() << "]" << std::endl;
 
     redisContext *c = redisConnect("127.0.0.1", 6379);
     if (c == NULL || c->err) {
@@ -138,7 +147,18 @@ class ConcordServiceImpl final : public Concord::Service {
 
 void RunServer() {
   std::string server_address("0.0.0.0:50051");
-  ConcordServiceImpl service;
+
+  redisContext *c = redisConnect("127.0.0.1", 6379);
+  if (c == NULL || c->err) {
+    if (c) {
+      printf("Error: %s\n", c->errstr);
+        // handle error
+    } else {
+      printf("Can't allocate redis context\n");
+    }
+  }
+
+  ConcordServiceImpl service(c);
 
   ServerBuilder builder;
   // Listen on the given address without any authentication mechanism.
