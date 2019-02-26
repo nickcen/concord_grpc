@@ -62,8 +62,6 @@ class ConcordServiceImpl final : public Concord::Service {
 
     if(pRedisReply->len > 0){
       reply->set_value(pRedisReply->str);
-    }else{
-      reply->set_value(NULL);
     }
 
     freeReplyObject(pRedisReply); 
