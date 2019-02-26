@@ -19,7 +19,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include <hiredis.h>
+#include <hiredis/hiredis.h>
 
 #include <grpcpp/grpcpp.h>
 
