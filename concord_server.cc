@@ -58,9 +58,6 @@ class ConcordServiceImpl final : public Concord::Service {
 
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", k);
 
-    
-    // std::string value = std::string(pRedisReply->str, pRedisReply->len);
-
     std::cout << "received Get request " << request->key() << ":" << pRedisReply->str << std::endl;
     reply->set_value(pRedisReply->str);
 
@@ -85,19 +82,52 @@ class ConcordServiceImpl final : public Concord::Service {
     const char *k = request->key().c_str();
     const char *v = request->value().c_str();
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %s", k, v);
-    std::cout << pRedisReply->str << std::endl;
+    
     freeReplyObject(pRedisReply); 
+
     return Status::OK;
   }
 
   Status Delete(ServerContext* context, const DeleteRequest* request,
     DeleteReply* reply) override {
 
+    std::cout << "received Delete request " << request->key() << std::endl;
+
+    redisContext *c = redisConnect("127.0.0.1", 6379);
+    if (c == NULL || c->err) {
+      if (c) {
+        printf("Error: %s\n", c->errstr);
+        // handle error
+      } else {
+        printf("Can't allocate redis context\n");
+      }
+    }
+    const char *k = request->key().c_str();
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "DEL %s", k);
+    
+    freeReplyObject(pRedisReply); 
+
     return Status::OK;
   }
 
   Status Init(ServerContext* context, const InitRequest* request,
     InitReply* reply) override {
+
+    std::cout << "received Init request " << std::endl;
+
+    redisContext *c = redisConnect("127.0.0.1", 6379);
+    if (c == NULL || c->err) {
+      if (c) {
+        printf("Error: %s\n", c->errstr);
+        // handle error
+      } else {
+        printf("Can't allocate redis context\n");
+      }
+    }
+    
+    redisReply *pRedisReply = (redisReply*)redisCommand(c, "flushall");
+    
+    freeReplyObject(pRedisReply); 
 
     return Status::OK;
   }
