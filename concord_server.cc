@@ -53,22 +53,12 @@ public:
   Status Get(ServerContext* context, const GetRequest* request,
     GetReply* reply) override {
 
-    // redisContext *c = redisConnect("127.0.0.1", 6379);
-    // if (c == NULL || c->err) {
-    //   if (c) {
-    //     printf("Error: %s\n", c->errstr);
-    //     // handle error
-    //   } else {
-    //     printf("Can't allocate redis context\n");
-    //   }
-    // }
     const char *k = request->key().c_str();
 
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "GET %s", k);
 
-    std::cout << "received Get request [" << request->key() << ":" << pRedisReply->str << "]" << std::endl;
-
     if(pRedisReply->len > 0){
+      std::cout << "received Get request [" << request->key() << ":" << pRedisReply->str << "]" << std::endl;
       reply->set_value(pRedisReply->str);
     }
 
@@ -81,16 +71,6 @@ public:
     SetReply* reply) override {
     std::cout << "received Set request [" << request->key() << ":" << request->value() << "]" << std::endl;
 
-    // redisContext *c = redisConnect("127.0.0.1", 6379);
-    // if (c == NULL || c->err) {
-    //   if (c) {
-    //     printf("Error: %s\n", c->errstr);
-    //     // handle error
-    //   } else {
-    //     printf("Can't allocate redis context\n");
-    //   }
-    // }
-    
     const char *k = request->key().c_str();
     const char *v = request->value().c_str();
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "SET %s %s", k, v);
@@ -105,15 +85,6 @@ public:
 
     std::cout << "received Delete request [" << request->key() << "]" << std::endl;
 
-    redisContext *c = redisConnect("127.0.0.1", 6379);
-    if (c == NULL || c->err) {
-      if (c) {
-        printf("Error: %s\n", c->errstr);
-        // handle error
-      } else {
-        printf("Can't allocate redis context\n");
-      }
-    }
     const char *k = request->key().c_str();
     redisReply *pRedisReply = (redisReply*)redisCommand(c, "DEL %s", k);
     
@@ -126,16 +97,6 @@ public:
     InitReply* reply) override {
 
     std::cout << "received Init request " << std::endl;
-
-    // redisContext *c = redisConnect("127.0.0.1", 6379);
-    // if (c == NULL || c->err) {
-    //   if (c) {
-    //     printf("Error: %s\n", c->errstr);
-    //     // handle error
-    //   } else {
-    //     printf("Can't allocate redis context\n");
-    //   }
-    // }
     
     // redisReply *pRedisReply = (redisReply*)redisCommand(c, "flushall");
     

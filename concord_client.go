@@ -32,7 +32,7 @@ func main() {
   }
   _ = s_r
 
-  g_r, err := c.Get(ctx, &pb.GetRequest{Key: "test"})
+  g_r, err := c.Get(ctx, &pb.GetRequest{Key: "not exists"})
   if err != nil {
     log.Fatalf("could not get: %v", err)
   }
